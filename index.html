@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[你的名字] ｜ Portfolio</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-color:#080814;
+      --bg-gradient:
+        radial-gradient(circle at top left, #3d5afe33, transparent 50%),
+        radial-gradient(circle at bottom right, #ff6e4033, transparent 55%);
+      --card-bg: rgba(26,26,46,.90);
+      --card-border: rgba(255,255,255,.06);
+      --text:#f5f5f5;
+      --muted:#b3b3c6;
+
+      --primary:#ff6e40;
+      --primary-soft: rgba(255,110,64,.10);
+      --accent:#7c4dff;
+
+      --radius-xl:18px;
+      --radius-lg:14px;
+      --shadow: 0 18px 45px rgba(0,0,0,.45);
+      --blur: 18px;
+
+      /* 卡片内光斑位置（默认居中） */
+      --mx: 50%;
+      --my: 50%;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: 'Poppins','Noto Sans SC',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+      color:var(--text);
+      background-color:var(--bg-color);
+      background-image:var(--bg-gradient);
+      line-height:1.7;
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
+    }
+
+    /* ===== 鼠标跟随“浮动光”（稳定版，不用 mix-blend-mode） ===== */
+    .cursor-glow{
+      position:fixed;
+      left:0; top:0;
+      width:520px; height:520px;
+      border-radius:999px;
+      pointer-events:none;
+      z-index:0;
+      opacity:.45;
+      filter: blur(24px);
+      transform: translate(-50%,-50%);
+      will-change: transform;
+      background:
+        radial-gradient(circle at 35% 35%, rgba(255,110,64,.22), transparent 55%),
+        radial-gradient(circle at 70% 70%, rgba(124,77,255,.18), transparent 60%);
+    }
+
+    /* 让主要内容永远压在光上面 */
+    .nav, .container{ position:relative; z-index:1; }
+
+    .container{
+      max-width:1060px;
+      margin:0 auto;
+      padding: 20px 16px 60px;
+    }
+
+    /* ===== 顶部导航 ===== */
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:30;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(to bottom, rgba(8,8,20,.95), rgba(8,8,20,.6));
+    }
+    .nav-inner{
+      max-width:1060px;
+      margin:0 auto;
+      padding:14px 16px 10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .nav-logo{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-weight:600;
+      letter-spacing:.04em;
+      font-size:.95rem;
+    }
+    .nav-dot{
+      width:9px;height:9px;border-radius:999px;
+      background: linear-gradient(135deg,#ff6e40,#ffcc80);
+      box-shadow: 0 0 12px rgba(255,110,64,.9);
+    }
+    .nav-links{
+      display:flex;
+      gap:18px;
+      font-size:.9rem;
+    }
+    .nav-links a{
+      color:var(--muted);
+      text-decoration:none;
+      padding:6px 10px;
+      border-radius:999px;
+      transition: all .25s ease;
+    }
+    .nav-links a:hover{
+      color:#fff;
+      background: rgba(255,255,255,.06);
+    }
+
+    /* ===== Hero ===== */
+    header{
+      padding:70px 8px 40px;
+      display:grid;
+      grid-template-columns: minmax(0,2.1fr) minmax(0,1.6fr);
+      gap:40px;
+      align-items:center;
+    }
+    .hero-highlight{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:4px 10px;
+      border-radius:999px;
+      background: rgba(255,110,64,.12);
+      color:var(--primary);
+      font-size:.82rem;
+      margin-bottom:14px;
+    }
+    .hero-highlight-dot{
+      width:6px;height:6px;border-radius:999px;
+      background:var(--primary);
+      box-shadow:0 0 8px rgba(255,110,64,.8);
+    }
+    .hero-copy h1{
+      margin:0 0 12px;
+      font-size:2.7rem;
+      letter-spacing:.03em;
+    }
+    .hero-subtitle{
+      color:var(--muted);
+      font-size:.98rem;
+      max-width:520px;
+    }
+    .hero-subtitle strong{ color:#fff; font-weight:500; }
+
+    .hero-tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:18px 0 24px;
+    }
+    .tag{
+      font-size:.78rem;
+      padding:4px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.06);
+      color:var(--muted);
+    }
+    .tag-primary{
+      border-color: rgba(255,110,64,.5);
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      align-items:center;
+    }
+    .btn{
+      border-radius:999px;
+      padding:9px 18px;
+      font-size:.9rem;
+      border:1px solid transparent;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      transition: all .25s ease;
+    }
+    .btn-primary{
+      background: linear-gradient(135deg,#ff6e40,#ff9e80);
+      color:#050510;
+      font-weight:600;
+      box-shadow:0 12px 28px rgba(255,110,64,.5);
+    }
+    .btn-primary:hover{
+      transform: translateY(-1px) scale(1.01);
+      box-shadow:0 14px 32px rgba(255,110,64,.6);
+    }
+    .btn-ghost{
+      background:transparent;
+      border-color: rgba(255,255,255,.14);
+      color:var(--muted);
+    }
+    .btn-ghost:hover{
+      border-color: rgba(255,255,255,.30);
+      color:#fff;
+      background: rgba(255,255,255,.04);
+    }
+    .hero-note{
+      font-size:.8rem;
+      color:var(--muted);
+      margin-top:8px;
+    }
+
+    /* 右侧卡片 */
+    .hero-card{
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      border:1px solid var(--card-border);
+      box-shadow: var(--shadow);
+      padding:22px 22px 18px;
+      backdrop-filter: blur(var(--blur));
+      position:relative;
+      overflow:hidden;
+      animation: float 4.5s ease-in-out infinite;
+    }
+    .hero-card::before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(255,110,64,.15), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(124,77,255,.18), transparent 55%);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .hero-card-inner{ position:relative; z-index:1; }
+    .avatar{
+      width:150px;height:150px;
+      border-radius:28%;
+      object-fit:cover;
+      border:3px solid rgba(255,255,255,.5);
+      box-shadow: 0 0 32px rgba(0,0,0,.7);
+      margin-bottom:16px;
+    }
+    .hero-role{ font-size:.85rem; color:var(--muted); margin-bottom:10px; }
+    .hero-pill-row{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+    .pill{
+      font-size:.74rem;
+      padding:3px 8px;
+      border-radius:999px;
+      background: rgba(5,5,16,.55);
+      border:1px solid rgba(255,255,255,.08);
+      color:var(--muted);
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .pill-dot{
+      width:6px;height:6px;border-radius:999px;
+      background:var(--accent);
+      box-shadow:0 0 8px rgba(124,77,255,.9);
+    }
+    .hero-mini{ font-size:.8rem; color:var(--muted); margin-top:10px; }
+    .hero-social{
+      margin-top:18px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+    }
+    .hero-social a{
+      font-size:.82rem;
+      color:var(--muted);
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:4px 8px;
+      border-radius:999px;
+      background: rgba(5,5,16,.6);
+      border:1px solid rgba(255,255,255,.06);
+      transition: all .25s ease;
+    }
+    .hero-social a:hover{
+      color:#fff;
+      border-color: rgba(255,255,255,.30);
+      background: rgba(255,255,255,.05);
+    }
+
+    @keyframes float{
+      0%{ transform: translateY(0); }
+      50%{ transform: translateY(-4px); }
+      100%{ transform: translateY(0); }
+    }
+
+    /* ===== 通用 section ===== */
+    section{ margin:50px 0; }
+    .section-title{
+      font-size:1.4rem;
+      margin-bottom:20px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .section-title span{
+      font-size:1rem;
+      color:var(--primary);
+    }
+    .section-title::after{
+      content:"";
+      flex:1;
+      height:1px;
+      background: linear-gradient(to right, rgba(255,110,64,.8), transparent);
+      opacity:.7;
+    }
+    .section-intro{
+      color:var(--muted);
+      font-size:.95rem;
+      max-width:640px;
+      margin-bottom:24px;
+    }
+
+    /* ===== 卡片基类 ===== */
+    .about-card, .timeline-card, .skills-card, .portfolio-card, .note-card{
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      border:1px solid var(--card-border);
+      padding:20px 20px 18px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(var(--blur));
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* 卡片内“跟鼠标走的光斑”——稳，不影响布局 */
+    .about-card::after, .timeline-card::after, .skills-card::after, .portfolio-card::after, .note-card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:inherit;
+      pointer-events:none;
+      opacity:0;
+      transition: opacity .2s ease;
+      background: radial-gradient(circle at var(--mx) var(--my), rgba(255,110,64,.16), transparent 45%);
+    }
+    .about-card:hover::after, .timeline-card:hover::after, .skills-card:hover::after, .portfolio-card:hover::after, .note-card:hover::after{
+      opacity:1;
+    }
+
+    /* ===== About ===== */
+    .about-grid{
+      display:grid;
+      grid-template-columns: minmax(0,1.8fr) minmax(0,1.4fr);
+      gap:30px;
+    }
+    .about-card p{ margin:0 0 10px; font-size:.95rem; }
+    .about-highlight{ color:var(--primary); font-weight:500; }
+    .timeline{
+      list-style:none;
+      margin:0; padding:0;
+      border-left:1px dashed rgba(255,255,255,.16);
+    }
+    .timeline-item{
+      position:relative;
+      padding-left:16px;
+      margin-bottom:14px;
+    }
+    .timeline-item::before{
+      content:"";
+      position:absolute;
+      left:-5px; top:4px;
+      width:8px; height:8px;
+      border-radius:999px;
+      background: var(--primary);
+      box-shadow:0 0 10px rgba(255,110,64,.9);
+    }
+    .timeline-title{ font-size:.9rem; font-weight:500; }
+    .timeline-meta{ font-size:.78rem; color:var(--muted); margin-top:2px; }
+
+    /* ===== Skills ===== */
+    .skills-grid{
+      display:grid;
+      grid-template-columns: minmax(0,1.6fr) minmax(0,1.4fr);
+      gap:24px;
+    }
+    .chip-row{ display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 4px; }
+    .chip{
+      font-size:.78rem;
+      padding:4px 9px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(5,5,16,.7);
+      color:var(--muted);
+    }
+    .chip.badge{
+      border-color: rgba(124,77,255,.9);
+      color:#d0c0ff;
+      background: rgba(124,77,255,.18);
+    }
+    .skills-subtitle{ font-size:.82rem; color:var(--muted); margin-top:6px; }
+
+    /* ===== Portfolio ===== */
+    .portfolio-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap:22px;
+    }
+    .portfolio-image{
+      width:100%;
+      height:190px;
+      border-radius:12px;
+      object-fit:cover;
+      margin-bottom:12px;
+    }
+    .portfolio-title{ font-size:1rem; margin-bottom:4px; }
+    .portfolio-meta{ font-size:.8rem; color:var(--muted); margin-bottom:6px; }
+    .badge-row{ display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+    .badge{
+      font-size:.75rem;
+      padding:2px 8px;
+      border-radius:999px;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      color:var(--muted);
+    }
+
+    /* ✅ 整卡可点击（方法一） */
+    .portfolio-link{
+      display:block;
+      text-decoration:none;
+      color:inherit;
+    }
+    .portfolio-link .portfolio-card{
+      cursor:pointer;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .portfolio-link:hover .portfolio-card{
+      transform: translateY(-2px);
+      box-shadow: 0 20px 55px rgba(0,0,0,.55);
+      border-color: rgba(255,255,255,.14);
+    }
+
+    /* 联系 */
+    .note-card p{ margin:6px 0; font-size:.92rem; }
+    .note-card a{ color:var(--primary); text-decoration:none; }
+    .note-card a:hover{ text-decoration:underline; }
+
+    footer{
+      text-align:center;
+      padding:40px 0 20px;
+      color:var(--muted);
+      font-size:.8rem;
+    }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 840px){
+      header{ grid-template-columns: 1fr; padding-top:60px; }
+      .hero-card{ order:-1; }
+      .about-grid, .skills-grid{ grid-template-columns: 1fr; }
+      .nav-links{ display:none; }
+      .hero-copy h1{ font-size:2.2rem; }
+    }
+
+    /* 移动端/触屏：关闭 cursor glow（省电省性能） */
+    @media (pointer: coarse){
+      .cursor-glow{ display:none; }
+    }
+
+    @media (max-width: 480px){
+      .container{ padding-inline:14px; }
+      .hero-copy h1{ font-size:2rem; }
+      .avatar{ width:130px; height:130px; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ✅ 全局鼠标跟随光 -->
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+  <div class="nav">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <span class="nav-dot"></span>
+        <span>[你的名字]</span>
+      </div>
+      <div class="nav-links">
+        <a href="#about">关于</a>
+        <a href="#skills">技能</a>
+        <a href="#portfolio">作品</a>
+        <a href="#contact">联系</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <header>
+      <div class="hero-copy">
+        <div class="hero-highlight">
+          <span class="hero-highlight-dot"></span>
+          <span>Creative · Curious · Always Learning</span>
+        </div>
+        <h1>[你的名字]</h1>
+        <p class="hero-subtitle">
+          年轻的 <strong>数字创作者 / 学习中的研究者</strong>。在代码、影像与文字之间切换，
+          把日常的灵感、实验与故事整理成可以分享的作品。
+        </p>
+
+        <div class="hero-tags">
+          <span class="tag tag-primary">设计感 & 审美控</span>
+          <span class="tag">前端 / AI / 数据</span>
+          <span class="tag">摄影 & 视觉记录</span>
+          <span class="tag">内容创作 & 文案</span>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#portfolio" class="btn btn-primary">查看作品 <span>↗</span></a>
+          <a href="#contact" class="btn btn-ghost">和我聊聊项目</a>
+        </div>
+
+        <p class="hero-note">这个页面会持续更新：新作品、学习记录、以及一些还在打磨中的想法。</p>
+      </div>
+
+      <div class="hero-card">
+        <div class="hero-card-inner">
+          <img class="avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Ares" alt="头像">
+          <div class="hero-role">[城市 / 学校] · 学生 / 创作者</div>
+          <div class="hero-pill-row">
+            <span class="pill"><span class="pill-dot"></span> night-owl模式</span>
+            <span class="pill">偏爱深色主题</span>
+            <span class="pill">灵感来自真实生活</span>
+          </div>
+          <p class="hero-mini">正在把自己的学习曲线、作品尝试，整理成一个干净但有个性的个人角落。</p>
+          <div class="hero-social">
+            <a href="mailto:your-email@example.com">✉ Email</a>
+            <a href="https://github.com/your-username" target="_blank" rel="noopener">⧉ GitHub</a>
+            <a href="#" target="_blank" rel="noopener">☆ 小红书 / 其他</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section id="about">
+      <h2 class="section-title"><span>关于我</span></h2>
+      <div class="section-intro">
+        不想把“关于我”写得像简历，而是像给朋友发的一条长消息：讲讲我现在在做什么、在好奇什么，
+        以及，这些碎片怎么慢慢拼成一个更完整的自己。
+      </div>
+
+      <div class="about-grid">
+        <div class="about-card">
+          <p>我是 <span class="about-highlight">[你的名字]</span>，目前在 [学校 / 城市] 学习与生活。介于理性与感性之间，一边做项目、一边拍照和写字，把想法先做出来再慢慢打磨。</p>
+          <p>对 <span class="about-highlight">视觉、叙事和交互</span> 特别敏感，喜欢让作品既好看，又有一点点耐心看完会发现的小细节。</p>
+          <p>
+            平时会做：<br>
+            · 用 <span class="about-highlight">代码</span> 做一些小工具 / 可视化<br>
+            · 用 <span class="about-highlight">图片 & 文案</span> 讲一小段故事<br>
+            · 记录生活里那些“还不够完美，但真实”的瞬间
+          </p>
+        </div>
+
+        <div class="timeline-card">
+          <ul class="timeline">
+            <li class="timeline-item">
+              <div class="timeline-title">202X – 至今 · [当前状态]</div>
+              <div class="timeline-meta">在 [学校 / 公司] 学习 / 工作，持续输出小项目。</div>
+            </li>
+            <li class="timeline-item">
+              <div class="timeline-title">202X · 第一个「正式」作品集页</div>
+              <div class="timeline-meta">写了现在你看到的这个网站的前身。</div>
+            </li>
+            <li class="timeline-item">
+              <div class="timeline-title">更早以前</div>
+              <div class="timeline-meta">断断续续地拍照、写字、画草图，慢慢积累审美和表达方式。</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <h2 class="section-title"><span>技能 & 兴趣</span></h2>
+      <div class="section-intro">
+        不只是“会什么软件”，而是我更习惯用怎样的方式处理信息、表达自己，以及和别人一起合作。
+      </div>
+
+      <div class="skills-grid">
+        <div class="skills-card">
+          <h3 style="margin:0 0 8px; font-size:1rem;">工具 & 技术</h3>
+          <div class="chip-row">
+            <span class="chip badge">HTML / CSS</span>
+            <span class="chip badge">Python / 数据基础</span>
+            <span class="chip">简单前端交互</span>
+            <span class="chip">数码摄影 / 调色</span>
+            <span class="chip">基础平面排版</span>
+          </div>
+          <p class="skills-subtitle">我喜欢把复杂的东西拆解到直观好懂，同时让呈现方式干净、有节奏、有重点。</p>
+        </div>
+
+        <div class="skills-card">
+          <h3 style="margin:0 0 8px; font-size:1rem;">关心的方向</h3>
+          <div class="chip-row">
+            <span class="chip">学习与成长记录</span>
+            <span class="chip">创作者的工作流</span>
+            <span class="chip">美学与效率的平衡</span>
+            <span class="chip">跨学科合作</span>
+          </div>
+          <p class="skills-subtitle">很多作品都还在“实验阶段”，但我会把迭代过程也记录下来，作为之后回看的脚印。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="portfolio">
+      <h2 class="section-title"><span>作品集 Portfolio</span></h2>
+      <div class="section-intro">
+        每张卡片都可以直接跳转到对应的 Notion / 项目页（整卡可点击）。
+      </div>
+
+      <div class="portfolio-grid">
+
+        <!-- ✅ 整卡可点击：把 href 换成你的 Notion 链接 -->
+        <a class="portfolio-link" href="https://www.notion.so/xxx" target="_blank" rel="noopener">
+          <div class="portfolio-card">
+            <img src="https://picsum.photos/seed/project1/600/400" alt="项目1" class="portfolio-image">
+            <div class="portfolio-title">Project 01 · 夜间城市速写</div>
+            <div class="portfolio-meta">摄影 / 调色 / 个人练习</div>
+            <p style="font-size:0.9rem; color:var(--muted);">
+              一组在城市里夜行拍下的照片尝试，用偏冷的色调和高对比度来抓住“孤独但不负能量”的感觉。
+            </p>
+            <div class="badge-row">
+              <span class="badge">Lightroom</span>
+              <span class="badge">街头摄影</span>
+            </div>
+          </div>
+        </a>
+
+        <a class="portfolio-link" href="https://www.notion.so/xxx" target="_blank" rel="noopener">
+          <div class="portfolio-card">
+            <img src="https://picsum.photos/seed/project2/600/400" alt="项目2" class="portfolio-image">
+            <div class="portfolio-title">Project 02 · 深色主题网页尝试</div>
+            <div class="portfolio-meta">网页设计 / 前端</div>
+            <p style="font-size:0.9rem; color:var(--muted);">
+              一页式个人主页，强调信息层级和留白，让重点信息在深色背景下更清晰地被看到。
+            </p>
+            <div class="badge-row">
+              <span class="badge">HTML / CSS</span>
+              <span class="badge">响应式设计</span>
+            </div>
+          </div>
+        </a>
+
+        <a class="portfolio-link" href="project-ai-notes.html" rel="noopener">
+          <div class="portfolio-card">
+            <img src="https://picsum.photos/seed/project3/600/400" alt="项目3" class="portfolio-image">
+            <div class="portfolio-title" data-key="proj3_title">Project 03 · AI 全线学习笔记</div>
+            <div class="portfolio-meta" data-key="proj3_meta">学习记录 / 信息设计</div>
+            <p style="font-size:0.9rem; color:var(--muted);" data-key="proj3_desc">
+              把课程与自学内容拆解成图表与可视化小卡片，让“学过的东西”变成看得见、翻得动的资产。
+            </p>
+            <div class="badge-row">
+              <span class="badge" data-key="proj3_badge1">笔记系统</span>
+              <span class="badge" data-key="proj3_badge2">Notion / Obsidian</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2 class="section-title"><span>联系 & 合作</span></h2>
+      <div class="note-card">
+        <p>如果你想一起做点什么，或者只是想聊聊学习、项目、审美和职业选择，也可以来打个招呼。</p>
+        <p>✉ 邮箱：<a href="mailto:your-email@example.com">your-email@example.com</a></p>
+        <p>⧉ 其他平台：<br>· GitHub / Behance / 小红书 / 微信公众号（按你的情况替换）</p>
+      </div>
+    </section>
+
+    <footer>© 2025 [你的名字]. Crafted in dark mode, with a bit of orange.</footer>
+  </div>
+
+  <script>
+    // ===== 全局鼠标跟随光：平滑移动（稳定版） =====
+    (() => {
+      const glow = document.getElementById('cursorGlow');
+      if (!glow) return;
+
+      // 触屏设备不启用
+      if (matchMedia('(pointer: coarse)').matches) {
+        glow.style.display = 'none';
+        return;
+      }
+
+      let tx = innerWidth * 0.5, ty = innerHeight * 0.35;
+      let cx = tx, cy = ty;
+
+      addEventListener('pointermove', (e) => {
+        tx = e.clientX;
+        ty = e.clientY;
+      }, { passive: true });
+
+      function tick(){
+        cx += (tx - cx) * 0.12;
+        cy += (ty - cy) * 0.12;
+        glow.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+        requestAnimationFrame(tick);
+      }
+      tick();
+    })();
+
+    // ===== 卡片内光斑跟随（hover 时更有质感）=====
+    (() => {
+      const cards = document.querySelectorAll('.about-card, .timeline-card, .skills-card, .portfolio-card, .note-card');
+
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const r = card.getBoundingClientRect();
+          const x = ((e.clientX - r.left) / r.width) * 100;
+          const y = ((e.clientY - r.top) / r.height) * 100;
+          card.style.setProperty('--mx', x + '%');
+          card.style.setProperty('--my', y + '%');
+        }, { passive: true });
+      });
+    })();
+  </script>
+</body>
+</html>
