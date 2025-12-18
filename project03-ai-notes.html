@@ -247,6 +247,7 @@
     <!-- 返回首页 -->
     <div class="top-bar">
       <a href="index.html" class="back-link">← 返回首页</a>
+      <div id="google_translate_element"></div>
     </div>
 
     <!-- 项目头 -->
@@ -350,6 +351,18 @@
       });
     })();
   </script>
+    <script>
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          {
+            pageLanguage: 'zh-CN',
+            includedLanguages: 'en,zh-CN',
+            autoDisplay: false
+          },
+          'google_translate_element'
+        );
+      }
+    </script>
 
 </body>
 </html>
