@@ -970,6 +970,86 @@
         
           </div>
         </a>
+
+        <a class="portfolio-link" href="project05-entires.html" rel="noopener">
+          <div class="portfolio-card">
+        
+            <div class="svg-cover">
+              <!-- Minimal Orange Cat Head with Slightly Stronger Glow | 1600x900 -->
+              <!-- Minimal Lottery Machine with Soft Glow | 1600x900 -->
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Minimal lottery machine icon">
+
+                <defs>
+                  <!-- background glow -->
+                  <radialGradient id="bgGlow" cx="50%" cy="45%" r="75%">
+                    <stop offset="0%" stop-color="#141632"/>
+                    <stop offset="100%" stop-color="#05050d"/>
+                  </radialGradient>
+
+                  <!-- machine surface light -->
+                  <radialGradient id="machineLight" cx="45%" cy="30%" r="80%">
+                    <stop offset="0%" stop-color="#FFA07A"/>
+                    <stop offset="100%" stop-color="#FF6E40"/>
+                  </radialGradient>
+
+                  <!-- soft glow -->
+                  <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="36"/>
+                  </filter>
+                </defs>
+
+                <!-- Background -->
+                <rect width="1600" height="900" fill="url(#bgGlow)"/>
+
+                <!-- Lottery Machine -->
+                <g transform="translate(800,470)">
+                  <!-- outer glow -->
+                  <rect x="-200" y="-280" width="400" height="560" rx="80"
+                        fill="#FF6E40" opacity="0.30" filter="url(#softGlow)"/>
+
+                  <!-- main body -->
+                  <rect x="-200" y="-280" width="400" height="560" rx="80"
+                        fill="url(#machineLight)"/>
+
+                  <!-- glass window -->
+                  <circle cx="0" cy="-80" r="120"
+                          fill="#0B0B14" opacity="0.90"/>
+
+                  <!-- balls (simplified) -->
+                  <circle cx="-40" cy="-60" r="16" fill="#FF6E40" opacity="0.9"/>
+                  <circle cx=" 30" cy="-40" r="16" fill="#FF6E40" opacity="0.9"/>
+                  <circle cx=" 10" cy="-10" r="16" fill="#FF6E40" opacity="0.9"/>
+                  <circle cx="-20" cy="-20" r="16" fill="#FF6E40" opacity="0.9"/>
+
+                  <!-- handle -->
+                  <rect x="110" y="40" width="36" height="110" rx="18"
+                        fill="#0B0B14" opacity="0.9"/>
+                  <circle cx="128" cy="160" r="26" fill="#0B0B14" opacity="0.9"/>
+
+                  <!-- output slot -->
+                  <rect x="-80" y="200" width="160" height="28" rx="14"
+                        fill="#0B0B14" opacity="0.85"/>
+
+                </g>
+
+              </svg>
+
+            </div>
+        
+            <div class="portfolio-title" data-key="proj4_title">Project 05 · 不同权重的抽奖工具</div>
+            <div class="portfolio-meta" data-key="proj4_meta">数据工具 / Python / 实践项目</div>
+            <p style="font-size:0.9rem; color:var(--muted);" data-key="proj4_desc">
+              使用 Python 和 Excel 的可配置、可复用的加权抽奖工具。
+            </p>
+        
+            <div class="badge-row">
+              <span class="badge" data-key="proj4_badge1">抽奖工具</span>
+              <span class="badge" data-key="proj4_badge2">Python</span>
+              <span class="badge" data-key="proj4_badge2">Excel</span>
+            </div>
+        
+          </div>
+        </a>
         
 
       </div>
