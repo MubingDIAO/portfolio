@@ -1076,13 +1076,73 @@
           <div class="portfolio-card">
         
             <div class="svg-cover">
-              <svg xmlns="http://www.w3.org/2000/svg"
-                   viewBox="0 0 1600 900"
-                   preserveAspectRatio="xMidYMid slice"
-                   role="img"
-                   aria-label="AI notes thumbnail">
-                <!-- 你的 defs 和内容原样不动，从这里开始粘回去即可 -->
-                ...
+              <!-- Minimal Orange Cat Head with Slightly Stronger Glow | 1600x900 -->
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" preserveAspectRatio="xMidYMid slice">
+
+                <defs>
+                  <!-- background glow -->
+                  <radialGradient id="bgGlow" cx="50%" cy="45%" r="75%">
+                    <stop offset="0%" stop-color="#141632"/>
+                    <stop offset="100%" stop-color="#05050d"/>
+                  </radialGradient>
+
+                  <!-- cat surface light -->
+                  <radialGradient id="catLight" cx="45%" cy="30%" r="70%">
+                    <stop offset="0%" stop-color="#FFA07A"/>
+                    <stop offset="100%" stop-color="#FF6E40"/>
+                  </radialGradient>
+
+                  <!-- stronger soft glow -->
+                  <filter id="catGlow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="36"/>
+                  </filter>
+                </defs>
+
+                <!-- Background -->
+                <rect width="1600" height="900" fill="url(#bgGlow)"/>
+
+                <!-- Cat -->
+                <g transform="translate(800,450)">
+                  <!-- outer glow -->
+                  <path d="
+                    M -220 -60
+                    L -320 -240
+                    L -120 -160
+                    Q 0 -240 120 -160
+                    L 320 -240
+                    L 220 -60
+                    Q 300 60 220 200
+                    Q 140 340 0 340
+                    Q -140 340 -220 200
+                    Q -300 60 -220 -60
+                    Z"
+                    fill="#FF6E40"
+                    opacity="0.32"
+                    filter="url(#catGlow)"/>
+
+                  <!-- main body -->
+                  <path d="
+                    M -220 -60
+                    L -320 -240
+                    L -120 -160
+                    Q 0 -240 120 -160
+                    L 320 -240
+                    L 220 -60
+                    Q 300 60 220 200
+                    Q 140 340 0 340
+                    Q -140 340 -220 200
+                    Q -300 60 -220 -60
+                    Z"
+                    fill="url(#catLight)"/>
+
+                  <!-- eyes -->
+                  <circle cx="-95" cy="60" r="22" fill="#0B0B14"/>
+                  <circle cx="95"  cy="60" r="22" fill="#0B0B14"/>
+
+                  <!-- nose -->
+                  <circle cx="0" cy="125" r="10" fill="#0B0B14"/>
+                </g>
+
               </svg>
             </div>
         
