@@ -1047,6 +1047,169 @@
         
           </div>
         </a>
+
+        <a class="portfolio-link" href="project06-cgcnn.html" rel="noopener">
+          <div class="portfolio-card">
+        
+            <div class="svg-cover">
+              <!-- Minimal Orange Cat Head with Slightly Stronger Glow | 1600x900 -->
+              <!-- Minimal Lottery Machine with Soft Glow | 1600x900 -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+                <defs>
+                  <!-- Background gradient -->
+                  <radialGradient id="bgRadial" cx="25%" cy="20%" r="90%">
+                    <stop offset="0%" stop-color="#121a3a"/>
+                    <stop offset="45%" stop-color="#070a18"/>
+                    <stop offset="100%" stop-color="#050611"/>
+                  </radialGradient>
+              
+                  <!-- Soft glow -->
+                  <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+                    <feGaussianBlur stdDeviation="6" result="blur"/>
+                    <feColorMatrix in="blur" type="matrix"
+                      values="1 0 0 0 0
+                              0 1 0 0 0
+                              0 0 1 0 0
+                              0 0 0 0.9 0"/>
+                    <feMerge>
+                      <feMergeNode/>
+                      <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                  </filter>
+              
+                  <!-- Subtle noise (no external assets) -->
+                  <filter id="noise" x="0" y="0" width="100%" height="100%">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch" />
+                    <feColorMatrix type="matrix"
+                      values="0 0 0 0 0.06
+                              0 0 0 0 0.07
+                              0 0 0 0 0.10
+                              0 0 0 0.12 0"/>
+                  </filter>
+              
+                  <!-- Faint grid pattern -->
+                  <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+                    <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#9aa0ff" stroke-opacity="0.08" stroke-width="1"/>
+                    <path d="M 24 0 L 24 48 M 0 24 L 48 24" fill="none" stroke="#9aa0ff" stroke-opacity="0.04" stroke-width="1"/>
+                  </pattern>
+              
+                  <!-- Molecule stroke gradient -->
+                  <linearGradient id="molStroke" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#22d3ee"/>
+                    <stop offset="55%" stop-color="#a78bfa"/>
+                    <stop offset="100%" stop-color="#34d399"/>
+                  </linearGradient>
+              
+                  <!-- Node fill gradient -->
+                  <radialGradient id="nodeFill" cx="35%" cy="30%" r="75%">
+                    <stop offset="0%" stop-color="#e0f2fe"/>
+                    <stop offset="35%" stop-color="#93c5fd"/>
+                    <stop offset="100%" stop-color="#0b1026"/>
+                  </radialGradient>
+              
+                  <radialGradient id="nodeFill2" cx="35%" cy="30%" r="75%">
+                    <stop offset="0%" stop-color="#f5d0fe"/>
+                    <stop offset="40%" stop-color="#a78bfa"/>
+                    <stop offset="100%" stop-color="#0b1026"/>
+                  </radialGradient>
+              
+                  <radialGradient id="nodeFill3" cx="35%" cy="30%" r="75%">
+                    <stop offset="0%" stop-color="#bbf7d0"/>
+                    <stop offset="40%" stop-color="#34d399"/>
+                    <stop offset="100%" stop-color="#0b1026"/>
+                  </radialGradient>
+                </defs>
+              
+                <!-- Background -->
+                <rect width="1600" height="900" fill="url(#bgRadial)"/>
+                <rect width="1600" height="900" fill="url(#grid)" opacity="1"/>
+                <rect width="1600" height="900" filter="url(#noise)" opacity="0.35"/>
+              
+                <!-- Ambient blobs -->
+                <g opacity="0.9">
+                  <circle cx="260" cy="210" r="180" fill="#22d3ee" opacity="0.08" filter="url(#glow)"/>
+                  <circle cx="1380" cy="720" r="230" fill="#a78bfa" opacity="0.08" filter="url(#glow)"/>
+                  <circle cx="1180" cy="180" r="140" fill="#34d399" opacity="0.06" filter="url(#glow)"/>
+                </g>
+              
+                <!-- Molecule (front) -->
+                <g filter="url(#glow)">
+                  <!-- Bonds -->
+                  <g fill="none" stroke="url(#molStroke)" stroke-width="4.5" stroke-linecap="round" opacity="0.9">
+                    <path d="M 310 520 L 450 420"/>
+                    <path d="M 450 420 L 610 470"/>
+                    <path d="M 450 420 L 520 280"/>
+                    <path d="M 610 470 L 760 380"/>
+                    <path d="M 610 470 L 700 620"/>
+                    <path d="M 520 280 L 690 240"/>
+                    <path d="M 690 240 L 820 290"/>
+                    <path d="M 820 290 L 930 210"/>
+                    <path d="M 820 290 L 960 350"/>
+                    <path d="M 760 380 L 910 430"/>
+                    <path d="M 700 620 L 860 640"/>
+                    <path d="M 860 640 L 980 560"/>
+                  </g>
+              
+                  <!-- Secondary faint bonds (depth) -->
+                  <g fill="none" stroke="#22d3ee" stroke-width="2" opacity="0.18">
+                    <path d="M 310 520 L 520 280"/>
+                    <path d="M 450 420 L 760 380"/>
+                    <path d="M 690 240 L 960 350"/>
+                    <path d="M 760 380 L 980 560"/>
+                  </g>
+              
+                  <!-- Nodes -->
+                  <g>
+                    <!-- Core nodes -->
+                    <circle cx="450" cy="420" r="18" fill="url(#nodeFill)" stroke="#7dd3fc" stroke-opacity="0.6" stroke-width="2"/>
+                    <circle cx="610" cy="470" r="16" fill="url(#nodeFill2)" stroke="#c4b5fd" stroke-opacity="0.6" stroke-width="2"/>
+                    <circle cx="520" cy="280" r="15" fill="url(#nodeFill3)" stroke="#86efac" stroke-opacity="0.6" stroke-width="2"/>
+              
+                    <!-- Surrounding nodes -->
+                    <circle cx="310" cy="520" r="13" fill="url(#nodeFill)" stroke="#7dd3fc" stroke-opacity="0.45" stroke-width="2"/>
+                    <circle cx="760" cy="380" r="14" fill="url(#nodeFill2)" stroke="#c4b5fd" stroke-opacity="0.45" stroke-width="2"/>
+                    <circle cx="700" cy="620" r="14" fill="url(#nodeFill3)" stroke="#86efac" stroke-opacity="0.45" stroke-width="2"/>
+                    <circle cx="690" cy="240" r="12" fill="url(#nodeFill)" stroke="#7dd3fc" stroke-opacity="0.45" stroke-width="2"/>
+                    <circle cx="820" cy="290" r="13" fill="url(#nodeFill2)" stroke="#c4b5fd" stroke-opacity="0.45" stroke-width="2"/>
+                    <circle cx="930" cy="210" r="11" fill="url(#nodeFill3)" stroke="#86efac" stroke-opacity="0.45" stroke-width="2"/>
+                    <circle cx="960" cy="350" r="12" fill="url(#nodeFill)" stroke="#7dd3fc" stroke-opacity="0.45" stroke-width="2"/>
+                    <circle cx="910" cy="430" r="12" fill="url(#nodeFill2)" stroke="#c4b5fd" stroke-opacity="0.45" stroke-width="2"/>
+                    <circle cx="860" cy="640" r="11" fill="url(#nodeFill3)" stroke="#86efac" stroke-opacity="0.45" stroke-width="2"/>
+                    <circle cx="980" cy="560" r="12" fill="url(#nodeFill)" stroke="#7dd3fc" stroke-opacity="0.45" stroke-width="2"/>
+                  </g>
+              
+                  <!-- Tiny spark points -->
+                  <g opacity="0.75">
+                    <circle cx="420" cy="360" r="2" fill="#22d3ee"/>
+                    <circle cx="575" cy="435" r="2" fill="#a78bfa"/>
+                    <circle cx="560" cy="310" r="2" fill="#34d399"/>
+                    <circle cx="820" cy="420" r="2" fill="#22d3ee"/>
+                    <circle cx="900" cy="300" r="2" fill="#a78bfa"/>
+                    <circle cx="740" cy="560" r="2" fill="#34d399"/>
+                  </g>
+                </g>
+              
+                <!-- Subtle vignette -->
+                <rect width="1600" height="900" fill="#000" opacity="0.18"/>
+              </svg>
+              
+
+            </div>
+        
+            <div class="portfolio-title" data-key="proj4_title">Project 05 · 不同权重的抽奖工具</div>
+            <div class="portfolio-meta" data-key="proj4_meta">数据工具 / Python / 实践项目</div>
+            <p style="font-size:0.9rem; color:var(--muted);" data-key="proj4_desc">
+              使用 Python 和 Excel 的可配置、可复用的加权抽奖工具。
+            </p>
+        
+            <div class="badge-row">
+              <span class="badge" data-key="proj4_badge1">抽奖工具</span>
+              <span class="badge" data-key="proj4_badge2">Python</span>
+              <span class="badge" data-key="proj4_badge2">Excel</span>
+            </div>
+        
+          </div>
+        </a>
         
 
       </div>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project · CGCNN 材料形成能测试</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== CSS Variables ===== */
+    :root {
+      --bg: #080814;
+      --card: rgba(26, 26, 46, 0.9);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #f5f5f5;
+      --muted: #b3b3c6;
+      --primary: #ff6e40;
+
+      --radius: 16px;
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+
+      /* 光斑位置（hover 用） */
+      --mx: 50%;
+      --my: 50%;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', 'Noto Sans SC', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ===== 鼠标跟随浮动光 ===== */
+    .cursor-glow {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 520px;
+      height: 520px;
+      border-radius: 999px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.45;
+      filter: blur(24px);
+      transform: translate(-50%, -50%);
+      will-change: transform;
+      background:
+        radial-gradient(circle at 35% 35%, rgba(255,110,64,0.22), transparent 55%),
+        radial-gradient(circle at 70% 70%, rgba(124,77,255,0.18), transparent 60%);
+    }
+
+    /* ===== Layout ===== */
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 32px 18px 80px;
+      position: relative;
+      z-index: 1; /* 内容在光之上 */
+    }
+
+    /* ===== 返回首页 ===== */
+    .top-bar {
+      margin-bottom: 28px;
+    }
+
+    .back-link {
+      font-size: 0.85rem;
+      color: var(--muted);
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
+      display: inline-block;
+    }
+
+    .back-link:hover {
+      color: #fff;
+      border-color: rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.05);
+    }
+
+    /* ===== Project Header ===== */
+    .project-header {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 26px 24px;
+      margin-bottom: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-header::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      background: radial-gradient(
+        circle at var(--mx) var(--my),
+        rgba(255,110,64,0.18),
+        transparent 45%
+      );
+    }
+
+    .project-header:hover::after {
+      opacity: 1;
+    }
+
+    .project-title {
+      font-size: 2rem;
+      margin: 0 0 10px;
+    }
+
+    .project-meta {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .tag.primary {
+      color: var(--primary);
+      border-color: rgba(255,110,64,0.5);
+      background: rgba(255,110,64,0.12);
+    }
+
+    /* ===== Sections ===== */
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      background: radial-gradient(
+        circle at var(--mx) var(--my),
+        rgba(255,110,64,0.16),
+        transparent 45%
+      );
+    }
+
+    .card:hover::after {
+      opacity: 1;
+    }
+
+    .card p,
+    .card li {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .card ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .external-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      font-size: 0.85rem;
+      color: var(--primary);
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 60px;
+    }
+
+    /* ===== Mobile ===== */
+    @media (pointer: coarse) {
+      .cursor-glow {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .project-title {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 鼠标跟随光 -->
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+  <div class="container">
+
+    <!-- 返回首页 -->
+    <div class="top-bar">
+      <a href="index.html" class="back-link">← 返回首页</a>
+      <div id="google_translate_element"></div>
+    </div>
+
+    <!-- 项目头 -->
+    <div class="project-header">
+        <h1 class="project-title">基于 CGCNN 的材料形成能预测</h1>
+        <div class="project-meta">材料信息学 / 图神经网络 / 回归建模</div>
+        <div class="project-tags">
+          <span class="tag primary">CGCNN</span>
+          <span class="tag">Graph Neural Network</span>
+          <span class="tag">Materials Informatics</span>
+          <span class="tag">MatBench</span>
+        </div>        
+    </div>
+    
+    <!-- 简介 -->
+    <div class="section">
+        <h2>项目简介</h2>
+        <div class="card">
+          <p>
+            材料形成能（Formation Energy）是衡量材料热力学稳定性的关键物理量，
+            在新材料筛选与设计中具有重要意义。
+            随着第一性原理数据库（如 Materials Project）的快速扩展，
+            如何仅从晶体结构出发，高效、准确地预测形成能，
+            成为材料信息学中的核心问题之一。
+          </p>
+      
+          <p>
+            本项目基于 MatBench 基准数据集 <strong>matbench_mp_e_form</strong>，
+            采用经典的 <strong>晶体图卷积神经网络（CGCNN）</strong>，
+            将晶体结构显式表示为图结构，
+            对材料形成能（eV/atom）进行监督回归预测。
+          </p>
+      
+          <p>
+            通过完整的数据预处理、模型训练与评估流程，
+            本实验在测试集上取得 <strong>0.049 eV/atom</strong> 的 MAE，
+            达到文献中 CGCNN 在同类任务上的基线性能水平，
+            验证了模型与实验流程的有效性。
+          </p>
+        </div>
+      </div>
+      
+    
+    <!-- 内容结构 -->
+    <div class="section">
+        <h2>当前内容结构</h2>
+        <div class="card">
+          <ul>
+            <li>
+              项目背景：材料形成能预测问题、MatBench 数据集与研究动机
+            </li>
+            <li>
+              数据与方法：晶体结构图表示、CGCNN 模型设计与训练流程
+            </li>
+            <li>
+              结果与分析：测试集 MAE 表现、训练收敛情况与基线对比
+            </li>
+            <li>
+              Insight：工程瓶颈、理想晶体假设的局限性与现实材料差距
+            </li>
+            <li>
+              开放问题与未来研究方向：缺陷与非理想结构的显式建模、不确定性与分布预测、实验数据与计算数据的融合学习
+            </li>
+          </ul>
+
+          <p style="font-size:0.75rem; color:#9aa0b3; margin-top:14px;">
+            Reference: Xie, T., &amp; Grossman, J. C. (2018).
+            <i>Crystal graph convolutional neural networks for an accurate and interpretable prediction of material properties</i>.
+            Physical Review Letters, 120(14), 145301.
+          </p>
+      
+          <a
+            class="external-link"
+            href="https://www.notion.so/CGCNN-2e1bbca67d4c809d89c9dcd790bbe7c4?source=copy_link"
+            target="_blank"
+            rel="noopener"
+          >
+            查看中文报告 ↗
+          </a>
+          <br />
+          <a
+            class="external-link"
+            href="https://www.notion.so/Report-on-Materials-Formation-Energy-Prediction-Based-on-CGCNN-English-Version-2e1bbca67d4c805b9518db53114238aa?source=copy_link"
+            target="_blank"
+            rel="noopener"
+          >
+            View English Report ↗
+          </a>
+          <br />
+          
+        </div>
+      </div>
+      
+    
+
+  <!-- 光标 JS -->
+  <script>
+    // 全局鼠标跟随光
+    (() => {
+      const glow = document.getElementById('cursorGlow');
+      if (!glow) return;
+
+      if (matchMedia('(pointer: coarse)').matches) {
+        glow.style.display = 'none';
+        return;
+      }
+
+      let tx = innerWidth * 0.5;
+      let ty = innerHeight * 0.35;
+      let cx = tx;
+      let cy = ty;
+
+      addEventListener('pointermove', (e) => {
+        tx = e.clientX;
+        ty = e.clientY;
+      }, { passive: true });
+
+      function tick() {
+        cx += (tx - cx) * 0.12;
+        cy += (ty - cy) * 0.12;
+        glow.style.transform =
+          `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+        requestAnimationFrame(tick);
+      }
+
+      tick();
+    })();
+
+    // 卡片光斑跟随
+    (() => {
+      const cards = document.querySelectorAll('.project-header, .card');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const r = card.getBoundingClientRect();
+          const x = ((e.clientX - r.left) / r.width) * 100;
+          const y = ((e.clientY - r.top) / r.height) * 100;
+          card.style.setProperty('--mx', x + '%');
+          card.style.setProperty('--my', y + '%');
+        }, { passive: true });
+      });
+    })();
+  </script>
+    <script>
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          {
+            pageLanguage: 'zh-CN',
+            includedLanguages: 'en,zh-CN',
+            autoDisplay: false
+          },
+          'google_translate_element'
+        );
+      }
+    </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
+</body>
+</html>
