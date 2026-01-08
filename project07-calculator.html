@@ -241,6 +241,90 @@
     @media (pointer: coarse){
       .cursor-glow{display:none;}
     }
+
+    /* =========================
+       ✅ Mobile fixes (新增)
+       ========================= */
+
+    @media (max-width: 640px){
+      body{ padding:14px; }
+
+      .top-bar{
+        flex-wrap:wrap;
+        align-items:flex-start;
+      }
+      #google_translate_element{
+        max-width:100%;
+        overflow:hidden;
+      }
+
+      .card .row{
+        flex-direction:column;
+        align-items:stretch;
+        gap:10px;
+      }
+
+      .card .row .inline{
+        margin-left:0 !important; /* 关键：去掉挤爆 */
+        width:100%;
+      }
+
+      .inline input{
+        width:100%;
+        max-width:180px;
+      }
+
+      /* iOS: 防止输入框触发自动放大 */
+      input, textarea{ font-size:16px; }
+      textarea{ font-size:14px; }
+
+      /* KPI pills 更好排版 */
+      .pill{ width:100%; justify-content:space-between; }
+    }
+
+    /* 表格 → 手机端卡片化，防止横向溢出 */
+    @media (max-width: 760px){
+      table{ border-spacing:0; }
+      thead{ display:none; }
+
+      tbody tr{
+        display:block;
+        margin-top:12px;
+        border:1px solid rgba(255,255,255,.08);
+        border-radius:14px;
+        padding:10px;
+        background:rgba(255,255,255,.03);
+      }
+
+      tbody td{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        padding:8px 0;
+        border:none;
+      }
+
+      tbody tr td:first-child,
+      tbody tr td:last-child{
+        border:none;
+        border-radius:0;
+      }
+
+      tbody td input{
+        width:60%;
+        max-width:260px;
+      }
+
+      tbody td:nth-child(1)::before{content:"项目"; color:var(--muted); font-size:12px;}
+      tbody td:nth-child(2)::before{content:"总学分"; color:var(--muted); font-size:12px;}
+      tbody td:nth-child(3)::before{content:"每学分 max(h)"; color:var(--muted); font-size:12px;}
+      tbody td:nth-child(4)::before{content:"每学分 min(h)"; color:var(--muted); font-size:12px;}
+      tbody td:nth-child(5)::before{content:"总时长 max"; color:var(--muted); font-size:12px;}
+      tbody td:nth-child(6)::before{content:"总时长 min"; color:var(--muted); font-size:12px;}
+      tbody td:nth-child(7)::before{content:"reference"; color:var(--muted); font-size:12px;}
+      tbody td:nth-child(8)::before{content:"操作"; color:var(--muted); font-size:12px;}
+    }
   </style>
 </head>
 
