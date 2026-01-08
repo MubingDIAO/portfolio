@@ -1051,7 +1051,7 @@
         <a class="portfolio-link" href="project06-cgcnn.html" rel="noopener">
           <div class="portfolio-card">
         
-            <div class="portfolio-image svg-cover">
+            <div class="portfolio-image svg-cover" viewBox="0 0 1600 900" width="1600" height="900" preserveAspectRatio="xMidYMid slice">
               <!-- Minimal Orange Cat Head with Slightly Stronger Glow | 1600x900 -->
               <!-- Minimal Lottery Machine with Soft Glow | 1600x900 -->
               <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Minimal lottery machine icon">
@@ -1196,16 +1196,271 @@
 
             </div>
         
-            <div class="portfolio-title" data-key="proj4_title">Project 05 · 不同权重的抽奖工具</div>
-            <div class="portfolio-meta" data-key="proj4_meta">数据工具 / Python / 实践项目</div>
+            <div class="portfolio-title" data-key="proj4_title">Project 06 · CGCNN 材料形成能测试</div>
+            <div class="portfolio-meta" data-key="proj4_meta">材料信息学 / 图神经网络 / 回归建模</div>
             <p style="font-size:0.9rem; color:var(--muted);" data-key="proj4_desc">
-              使用 Python 和 Excel 的可配置、可复用的加权抽奖工具。
+              基于 CGCNN 的材料形成能预测
             </p>
         
             <div class="badge-row">
-              <span class="badge" data-key="proj4_badge1">抽奖工具</span>
+              <span class="badge" data-key="proj4_badge1">CGCNN</span>
+              <span class="badge" data-key="proj4_badge2">Graph Neural Network</span>
+              <span class="badge" data-key="proj4_badge2">Materials Informatics</span>
               <span class="badge" data-key="proj4_badge2">Python</span>
-              <span class="badge" data-key="proj4_badge2">Excel</span>
+            </div>
+        
+          </div>
+        </a>
+
+        <a class="portfolio-link" href="project07-calculator.html" rel="noopener">
+          <div class="portfolio-card">
+        
+            <div class="portfolio-image svg-cover" viewBox="0 0 1600 900" width="1600" height="900" preserveAspectRatio="xMidYMid slice">
+              <!-- Minimal Orange Cat Head with Slightly Stronger Glow | 1600x900 -->
+              <!-- Minimal Lottery Machine with Soft Glow | 1600x900 -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img">
+                <defs>
+                  <!-- Background gradient -->
+                  <radialGradient id="bgRadial" cx="25%" cy="20%" r="90%">
+                    <stop offset="0%" stop-color="#121a3a"/>
+                    <stop offset="45%" stop-color="#070a18"/>
+                    <stop offset="100%" stop-color="#050611"/>
+                  </radialGradient>
+              
+                  <!-- Soft glow -->
+                  <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+                    <feGaussianBlur stdDeviation="6" result="blur"/>
+                    <feColorMatrix in="blur" type="matrix"
+                      values="1 0 0 0 0
+                              0 1 0 0 0
+                              0 0 1 0 0
+                              0 0 0 0.9 0"/>
+                    <feMerge>
+                      <feMergeNode/>
+                      <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                  </filter>
+              
+                  <!-- Subtle noise -->
+                  <filter id="noise" x="0" y="0" width="100%" height="100%">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch" />
+                    <feColorMatrix type="matrix"
+                      values="0 0 0 0 0.06
+                              0 0 0 0 0.07
+                              0 0 0 0 0.10
+                              0 0 0 0.12 0"/>
+                  </filter>
+              
+                  <!-- Faint grid -->
+                  <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+                    <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#9aa0ff" stroke-opacity="0.08" stroke-width="1"/>
+                    <path d="M 24 0 L 24 48 M 0 24 L 48 24" fill="none" stroke="#9aa0ff" stroke-opacity="0.04" stroke-width="1"/>
+                  </pattern>
+              
+                  <!-- Accent gradients -->
+                  <linearGradient id="strokeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#22d3ee"/>
+                    <stop offset="55%" stop-color="#a78bfa"/>
+                    <stop offset="100%" stop-color="#34d399"/>
+                  </linearGradient>
+              
+                  <linearGradient id="screenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#0b1536" stop-opacity="0.95"/>
+                    <stop offset="100%" stop-color="#070a18" stop-opacity="0.95"/>
+                  </linearGradient>
+              
+                  <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#141a3a" stop-opacity="0.95"/>
+                    <stop offset="100%" stop-color="#0b0f26" stop-opacity="0.95"/>
+                  </linearGradient>
+              
+                  <radialGradient id="keyGrad" cx="35%" cy="30%" r="80%">
+                    <stop offset="0%" stop-color="#1a2552"/>
+                    <stop offset="60%" stop-color="#0f1636"/>
+                    <stop offset="100%" stop-color="#0b1026"/>
+                  </radialGradient>
+              
+                  <radialGradient id="keyGradAccent" cx="35%" cy="30%" r="80%">
+                    <stop offset="0%" stop-color="#1a3550"/>
+                    <stop offset="55%" stop-color="#0e2136"/>
+                    <stop offset="100%" stop-color="#0b1026"/>
+                  </radialGradient>
+              
+                  <radialGradient id="keyGradPurple" cx="35%" cy="30%" r="80%">
+                    <stop offset="0%" stop-color="#2a1f52"/>
+                    <stop offset="55%" stop-color="#16133a"/>
+                    <stop offset="100%" stop-color="#0b1026"/>
+                  </radialGradient>
+              
+                  <radialGradient id="keyGradGreen" cx="35%" cy="30%" r="80%">
+                    <stop offset="0%" stop-color="#123a32"/>
+                    <stop offset="55%" stop-color="#0f1f1b"/>
+                    <stop offset="100%" stop-color="#0b1026"/>
+                  </radialGradient>
+              
+                  <!-- Inner shadow-ish -->
+                  <filter id="softShadow" x="-40%" y="-40%" width="180%" height="180%">
+                    <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000000" flood-opacity="0.55"/>
+                  </filter>
+              
+                  <!-- Small highlight -->
+                  <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.10"/>
+                    <stop offset="35%" stop-color="#ffffff" stop-opacity="0.02"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+              
+                <!-- Background -->
+                <rect width="1600" height="900" fill="url(#bgRadial)"/>
+                <rect width="1600" height="900" fill="url(#grid)"/>
+                <rect width="1600" height="900" filter="url(#noise)" opacity="0.35"/>
+              
+                <!-- Ambient blobs -->
+                <g opacity="0.9">
+                  <circle cx="280" cy="220" r="180" fill="#22d3ee" opacity="0.07" filter="url(#glow)"/>
+                  <circle cx="1360" cy="720" r="240" fill="#a78bfa" opacity="0.08" filter="url(#glow)"/>
+                  <circle cx="1180" cy="170" r="140" fill="#34d399" opacity="0.06" filter="url(#glow)"/>
+                </g>
+              
+                <!-- Calculator -->
+                <g filter="url(#softShadow)">
+                  <!-- Outer body -->
+                  <rect x="510" y="140" width="580" height="640" rx="38" fill="url(#bodyGrad)" stroke="url(#strokeGrad)" stroke-opacity="0.55" stroke-width="2.5"/>
+              
+                  <!-- Top shine -->
+                  <path d="M540 165 C650 135, 860 135, 1060 170 L1060 215 C860 190, 650 190, 540 220 Z"
+                        fill="url(#shine)" opacity="0.9"/>
+              
+                  <!-- Screen bezel -->
+                  <rect x="565" y="185" width="470" height="130" rx="22" fill="#060818" stroke="url(#strokeGrad)" stroke-opacity="0.35" stroke-width="2"/>
+                  <!-- Screen -->
+                  <rect x="585" y="205" width="430" height="90" rx="16" fill="url(#screenGrad)" stroke="#9aa0ff" stroke-opacity="0.10"/>
+              
+                  <!-- Screen glow line -->
+                  <rect x="600" y="230" width="400" height="3" rx="2" fill="#22d3ee" opacity="0.25" filter="url(#glow)"/>
+                  <rect x="600" y="255" width="280" height="3" rx="2" fill="#a78bfa" opacity="0.18" filter="url(#glow)"/>
+                  <rect x="600" y="280" width="340" height="3" rx="2" fill="#34d399" opacity="0.14" filter="url(#glow)"/>
+              
+                  <!-- Tiny status dots (no text) -->
+                  <g opacity="0.8" filter="url(#glow)">
+                    <circle cx="965" cy="235" r="3" fill="#22d3ee"/>
+                    <circle cx="985" cy="235" r="3" fill="#a78bfa"/>
+                    <circle cx="1005" cy="235" r="3" fill="#34d399"/>
+                  </g>
+              
+                  <!-- Keys area background -->
+                  <rect x="565" y="340" width="470" height="390" rx="26" fill="#070a18" stroke="#9aa0ff" stroke-opacity="0.06"/>
+              
+                  <!-- Keys grid (4x5) -->
+                  <!-- Layout params -->
+                  <!-- keyW=98, keyH=62, gapX=18, gapY=16 -->
+                  <g filter="url(#glow)">
+                    <!-- Row 1 -->
+                    <rect x="590" y="365" width="98" height="62" rx="16" fill="url(#keyGradPurple)" stroke="url(#strokeGrad)" stroke-opacity="0.18"/>
+                    <rect x="706" y="365" width="98" height="62" rx="16" fill="url(#keyGradPurple)" stroke="url(#strokeGrad)" stroke-opacity="0.18"/>
+                    <rect x="822" y="365" width="98" height="62" rx="16" fill="url(#keyGradPurple)" stroke="url(#strokeGrad)" stroke-opacity="0.18"/>
+                    <rect x="938" y="365" width="98" height="62" rx="16" fill="url(#keyGradAccent)" stroke="url(#strokeGrad)" stroke-opacity="0.25"/>
+              
+                    <!-- Row 2 -->
+                    <rect x="590" y="443" width="98" height="62" rx="16" fill="url(#keyGrad)" stroke="url(#strokeGrad)" stroke-opacity="0.12"/>
+                    <rect x="706" y="443" width="98" height="62" rx="16" fill="url(#keyGrad)" stroke="url(#strokeGrad)" stroke-opacity="0.12"/>
+                    <rect x="822" y="443" width="98" height="62" rx="16" fill="url(#keyGrad)" stroke="url(#strokeGrad)" stroke-opacity="0.12"/>
+                    <rect x="938" y="443" width="98" height="62" rx="16" fill="url(#keyGradAccent)" stroke="url(#strokeGrad)" stroke-opacity="0.25"/>
+              
+                    <!-- Row 3 -->
+                    <rect x="590" y="521" width="98" height="62" rx="16" fill="url(#keyGrad)" stroke="url(#strokeGrad)" stroke-opacity="0.12"/>
+                    <rect x="706" y="521" width="98" height="62" rx="16" fill="url(#keyGrad)" stroke="url(#strokeGrad)" stroke-opacity="0.12"/>
+                    <rect x="822" y="521" width="98" height="62" rx="16" fill="url(#keyGrad)" stroke="url(#strokeGrad)" stroke-opacity="0.12"/>
+                    <rect x="938" y="521" width="98" height="62" rx="16" fill="url(#keyGradAccent)" stroke="url(#strokeGrad)" stroke-opacity="0.25"/>
+              
+                    <!-- Row 4 -->
+                    <rect x="590" y="599" width="98" height="62" rx="16" fill="url(#keyGrad)" stroke="url(#strokeGrad)" stroke-opacity="0.12"/>
+                    <rect x="706" y="599" width="98" height="62" rx="16" fill="url(#keyGrad)" stroke="url(#strokeGrad)" stroke-opacity="0.12"/>
+                    <rect x="822" y="599" width="98" height="62" rx="16" fill="url(#keyGrad)" stroke="url(#strokeGrad)" stroke-opacity="0.12"/>
+                    <rect x="938" y="599" width="98" height="62" rx="16" fill="url(#keyGradAccent)" stroke="url(#strokeGrad)" stroke-opacity="0.25"/>
+              
+                    <!-- Row 5 (0 key wide + equals tall) -->
+                    <rect x="590" y="677" width="214" height="62" rx="16" fill="url(#keyGrad)" stroke="url(#strokeGrad)" stroke-opacity="0.14"/>
+                    <rect x="822" y="677" width="98" height="62" rx="16" fill="url(#keyGrad)" stroke="url(#strokeGrad)" stroke-opacity="0.14"/>
+                    <rect x="938" y="677" width="98" height="62" rx="16" fill="url(#keyGradGreen)" stroke="url(#strokeGrad)" stroke-opacity="0.30"/>
+                  </g>
+              
+                  <!-- Minimal key glyphs (no text, just shapes) -->
+                  <g opacity="0.65">
+                    <!-- Use simple dots/lines to imply symbols -->
+                    <!-- Top-right operator column -->
+                    <g fill="none" stroke="#e5e7ff" stroke-opacity="0.55" stroke-width="3" stroke-linecap="round">
+                      <!-- ÷ -->
+                      <circle cx="987" cy="386" r="3" fill="#e5e7ff" stroke="none"/>
+                      <line x1="974" y1="398" x2="1000" y2="398"/>
+                      <circle cx="987" cy="410" r="3" fill="#e5e7ff" stroke="none"/>
+              
+                      <!-- × -->
+                      <line x1="974" y1="461" x2="1000" y2="487"/>
+                      <line x1="1000" y1="461" x2="974" y2="487"/>
+              
+                      <!-- − -->
+                      <line x1="974" y1="554" x2="1000" y2="554"/>
+              
+                      <!-- + -->
+                      <line x1="987" y1="614" x2="987" y2="646"/>
+                      <line x1="972" y1="630" x2="1002" y2="630"/>
+                    </g>
+              
+                    <!-- Equals -->
+                    <g fill="none" stroke="#e5e7ff" stroke-opacity="0.65" stroke-width="3" stroke-linecap="round">
+                      <line x1="970" y1="703" x2="1005" y2="703"/>
+                      <line x1="970" y1="721" x2="1005" y2="721"/>
+                    </g>
+              
+                    <!-- A few numeric hints as dot matrices -->
+                    <g fill="#e5e7ff" fill-opacity="0.35">
+                      <!-- a 3x3 dot block on some keys -->
+                      <g transform="translate(620 464)">
+                        <circle cx="0" cy="0" r="2"/><circle cx="12" cy="0" r="2"/><circle cx="24" cy="0" r="2"/>
+                        <circle cx="0" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="24" cy="12" r="2"/>
+                        <circle cx="0" cy="24" r="2"/><circle cx="12" cy="24" r="2"/><circle cx="24" cy="24" r="2"/>
+                      </g>
+                      <g transform="translate(736 542)">
+                        <circle cx="0" cy="0" r="2"/><circle cx="12" cy="0" r="2"/><circle cx="24" cy="0" r="2"/>
+                        <circle cx="0" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="24" cy="12" r="2"/>
+                        <circle cx="0" cy="24" r="2"/><circle cx="12" cy="24" r="2"/><circle cx="24" cy="24" r="2"/>
+                      </g>
+                      <g transform="translate(852 620)">
+                        <circle cx="0" cy="0" r="2"/><circle cx="12" cy="0" r="2"/><circle cx="24" cy="0" r="2"/>
+                        <circle cx="0" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="24" cy="12" r="2"/>
+                        <circle cx="0" cy="24" r="2"/><circle cx="12" cy="24" r="2"/><circle cx="24" cy="24" r="2"/>
+                      </g>
+                    </g>
+                  </g>
+              
+                  <!-- Small corner spark -->
+                  <g opacity="0.9" filter="url(#glow)">
+                    <circle cx="555" cy="155" r="2.2" fill="#22d3ee"/>
+                    <circle cx="575" cy="155" r="2.2" fill="#a78bfa"/>
+                    <circle cx="595" cy="155" r="2.2" fill="#34d399"/>
+                  </g>
+                </g>
+              
+                <!-- Subtle vignette -->
+                <rect width="1600" height="900" fill="#000" opacity="0.18"/>
+              </svg>
+              
+              
+
+            </div>
+        
+            <div class="portfolio-title" data-key="proj4_title">Project 07 · ECTS 学分转换计算器</div>
+            <div class="portfolio-meta" data-key="proj4_meta">数据工具 / 学分转换 / 实践项目</div>
+            <p style="font-size:0.9rem; color:var(--muted);" data-key="proj4_desc">
+              一个用于将不同高校学分体系统一转换为“学习工作量（学时）”并对标 ECTS 的计算工具。
+            </p>
+        
+            <div class="badge-row">
+              <span class="badge" data-key="proj4_badge1">Web Tool</span>
+              <span class="badge" data-key="proj4_badge2">ECTS</span>
+              <span class="badge" data-key="proj4_badge2">学分换算</span>
             </div>
         
           </div>

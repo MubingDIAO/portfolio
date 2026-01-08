@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Credit → Workload → ECTS Calculator</title>
+  <style>
+    :root{
+      --bg:#080814;
+      --card:rgba(26,26,46,.92);
+      --border:rgba(255,255,255,.08);
+      --text:#f5f5f5;
+      --muted:#b3b3c6;
+      --primary:#7c4dff;
+      --accent:#ff6e40;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans SC", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: radial-gradient(circle at top left, rgba(124,77,255,.18), transparent 50%),
+                  radial-gradient(circle at bottom right, rgba(255,110,64,.15), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      padding:24px;
+    }
+    .wrap{max-width:1100px;margin:0 auto}
+    h1{font-size:20px;margin:0 0 8px}
+    .sub{color:var(--muted);font-size:13px;margin-bottom:18px;line-height:1.5}
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:16px;
+      box-shadow:0 8px 24px rgba(0,0,0,.25);
+    }
+    .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    .btn{
+      background:rgba(124,77,255,.18);
+      border:1px solid rgba(124,77,255,.35);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:13px;
+      transition:.15s ease;
+      user-select:none;
+    }
+    .btn:hover{transform:translateY(-1px);border-color:rgba(124,77,255,.6)}
+    .btn.danger{
+      background:rgba(255,110,64,.12);
+      border-color:rgba(255,110,64,.35);
+    }
+    .btn.ghost{
+      background:transparent;
+      border-color:var(--border);
+      color:var(--muted);
+    }
+    table{width:100%;border-collapse:separate;border-spacing:0 10px;margin-top:10px}
+    thead th{
+      text-align:left;
+      font-size:12px;
+      color:var(--muted);
+      font-weight:600;
+      padding:0 10px;
+    }
+    tbody tr{
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--border);
+    }
+    tbody td{
+      padding:10px;
+      vertical-align:middle;
+      border-top:1px solid rgba(255,255,255,.06);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    tbody tr td:first-child{border-left:1px solid rgba(255,255,255,.06);border-radius:12px 0 0 12px}
+    tbody tr td:last-child{border-right:1px solid rgba(255,255,255,.06);border-radius:0 12px 12px 0}
+    input{
+      width:100%;
+      padding:9px 10px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(10,10,25,.55);
+      color:var(--text);
+      outline:none;
+      font-size:13px;
+    }
+    input::placeholder{color:rgba(179,179,198,.55)}
+    .mono{font-variant-numeric:tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 10px;border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+      font-size:12px;
+    }
+    .kpi{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .kpi .pill strong{color:var(--text)}
+    a{color:#9bb6ff;text-decoration:none}
+    a:hover{text-decoration:underline}
+    .small{font-size:12px;color:var(--muted);line-height:1.5}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+    @media (max-width:920px){ .grid2{grid-template-columns:1fr} }
+    textarea{
+      width:100%;
+      min-height:120px;
+      padding:10px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(10,10,25,.55);
+      color:var(--text);
+      font-size:12px;
+      line-height:1.5;
+      resize:vertical;
+    }
+    .inline{
+      display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+      padding:10px 12px;border-radius:14px;border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+    }
+    .inline label{font-size:12px;color:var(--muted)}
+    .inline input{width:110px}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Credit → Workload → ECTS 计算器</h1>
+  <div class="sub">
+    ECTS（European Credit Transfer and Accumulation System）是欧洲高校常用的学分体系，核心作用是把“学习强度”统一到一个可比较的标准上，方便不同国家、不同学校之间认学分、算资格。它关注的不是课程名字，而是学生完成一门课实际要投入多少时间，一般一整个学年对应 60 ECTS。
+    对非欧洲学生来说，本计算器可以帮助用来核对自己是否满足学分或学习量要求。
+  </div>
+  <div class="sub">
+    先把各校“学分”换成 <span class="mono">总学习时间（hours）</span>，再用 <span class="mono">ECTS 25–30 h/ECTS</span> 给出区间等效。<br/>
+    你可以用预设（CityU / NUS），也可以手动改每行的 “每学分代表时长(min/max)” 和 reference。
+  </div>
+
+  <div class="card">
+    <div class="row">
+      <button class="btn" id="addRow">+ 加一行</button>
+      <button class="btn" id="presetCityu">预设：CityU 本科</button>
+      <button class="btn" id="presetNus">预设：NUS（示例行，可自行改口径）</button>
+      <button class="btn danger" id="reset">清空</button>
+
+      <div class="inline" style="margin-left:auto">
+        <label>标准门槛（ECTS）</label>
+        <input id="thresholdEcts" class="mono" type="number" step="1" value="180" />
+        <span class="small">（可改：120 / 180 / 240 / 300…）</span>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width:16%">项目</th>
+          <th style="width:10%">总学分</th>
+          <th style="width:16%">每学分代表时长 max(h)</th>
+          <th style="width:16%">每学分代表时长 min(h)</th>
+          <th style="width:12%">总时长 max</th>
+          <th style="width:12%">总时长 min</th>
+          <th style="width:24%">reference（可贴链接）</th>
+          <th style="width:6%"></th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+
+    <div class="kpi" id="kpi"></div>
+
+    <div class="grid2">
+      <div>
+        <div class="small">结果摘要（可复制到申请材料）</div>
+        <textarea id="summary" class="mono" readonly></textarea>
+        <div class="row" style="margin-top:10px">
+          <button class="btn" id="copySummary">复制摘要</button>
+          <button class="btn ghost" id="copyJson">复制 JSON</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="small">
+          通用快捷计算（把学分的 workload 定义显式化）<br/>
+          公式：<span class="mono">每学分总小时 = (每周总学习小时 ÷ 每门课学分) × 学期周数</span>
+        </div>
+
+        <div class="row" style="margin-top:10px">
+          <div style="flex:1">
+            <label class="small">每周总学习小时（含 lecture + self-study）</label>
+            <input id="weeklyHours" type="number" step="0.1" value="10" />
+          </div>
+          <div style="flex:1">
+            <label class="small">每门课学分（如 4）</label>
+            <input id="courseCredits" type="number" step="0.1" value="4" />
+          </div>
+          <div style="flex:1">
+            <label class="small">学期周数（如 15/16）</label>
+            <input id="semesterWeeks" type="number" step="1" value="15" />
+          </div>
+        </div>
+
+        <div class="kpi" style="margin-top:10px">
+          <span class="pill mono" id="perCreditPreview">每学分总小时：-</span>
+          <button class="btn" id="applyCalc">应用到选中行</button>
+        </div>
+
+        <div class="small" style="margin-top:8px">
+          用法：选中你要更新的那一行（表格会高亮），然后点“应用到选中行”，会把该行的 min/max 都设置为同一个计算值（你也可以再手动改回区间）。
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const ECTS_MIN = 25; // hours per ECTS
+  const ECTS_MAX = 30;
+
+  const tbody = document.getElementById('tbody');
+  const kpi = document.getElementById('kpi');
+  const summary = document.getElementById('summary');
+  const thresholdEcts = document.getElementById('thresholdEcts');
+
+  let rows = [];
+  let selectedRowId = null;
+
+  function uid(){ return Math.random().toString(36).slice(2,9); }
+  function fmt(n){
+    if (Number.isNaN(n) || n === null || n === undefined) return '';
+    return (Math.round(n*100)/100).toString();
+  }
+
+  function computeRow(r){
+    const credits = Number(r.credits) || 0;
+    const hMax = Number(r.hMax) || 0;
+    const hMin = Number(r.hMin) || 0;
+    return {
+      ...r,
+      totalMax: credits * hMax,
+      totalMin: credits * hMin
+    };
+  }
+
+  function buildSummaryText(totals, ectsEqMin, ectsEqMax, threshold){
+    const lines = [];
+    lines.push(`Workload summary (hours)`);
+    lines.push(`- Total workload (min–max): ${fmt(totals.min)}–${fmt(totals.max)} h`);
+    lines.push(`- ECTS reference: 1 ECTS = ${ECTS_MIN}–${ECTS_MAX} h`);
+    lines.push(`- Workload-based ECTS equivalence: ~${fmt(ectsEqMin)}–${fmt(ectsEqMax)} ECTS`);
+    lines.push(`- Threshold (ECTS): ${threshold} → ${fmt(threshold*ECTS_MIN)}–${fmt(threshold*ECTS_MAX)} h`);
+    lines.push(``);
+    lines.push(`Breakdown:`);
+    rows.map(computeRow).forEach(r=>{
+      lines.push(`- ${r.name || '(unnamed)'}: ${r.credits || 0} credits × ${r.hMin||0}–${r.hMax||0} h = ${fmt(r.totalMin)}–${fmt(r.totalMax)} h`);
+      if ((r.ref||'').trim()) lines.push(`  ref: ${r.ref.trim()}`);
+    });
+    return lines.join('\n');
+  }
+
+  function render(){
+    tbody.innerHTML = rows.map(r=>{
+      const rr = computeRow(r);
+      return `
+        <tr data-id="${rr.id}" style="${selectedRowId===rr.id?'outline:1px solid rgba(124,77,255,.55)':''}">
+          <td>
+            <input value="${rr.name}" placeholder="如：cityu 本科" oninput="onEdit('${rr.id}','name',this.value)" onclick="selectRow('${rr.id}')"/>
+          </td>
+          <td><input class="mono" type="number" step="1" value="${rr.credits}" oninput="onEdit('${rr.id}','credits',this.value)" onclick="selectRow('${rr.id}')"/></td>
+          <td><input class="mono" type="number" step="0.1" value="${rr.hMax}" oninput="onEdit('${rr.id}','hMax',this.value)" onclick="selectRow('${rr.id}')"/></td>
+          <td><input class="mono" type="number" step="0.1" value="${rr.hMin}" oninput="onEdit('${rr.id}','hMin',this.value)" onclick="selectRow('${rr.id}')"/></td>
+          <td class="mono">${fmt(rr.totalMax)}</td>
+          <td class="mono">${fmt(rr.totalMin)}</td>
+          <td><input value="${rr.ref}" placeholder="粘贴 URL 或备注" oninput="onEdit('${rr.id}','ref',this.value)" onclick="selectRow('${rr.id}')"/></td>
+          <td><button class="btn danger" onclick="removeRow('${rr.id}')">删</button></td>
+        </tr>
+      `;
+    }).join('');
+
+    const totals = rows.map(computeRow).reduce((acc,r)=>{
+      acc.max += r.totalMax || 0;
+      acc.min += r.totalMin || 0;
+      return acc;
+    },{max:0,min:0});
+
+    const ectsEqMin = totals.min / ECTS_MAX; // conservative (divide by 30)
+    const ectsEqMax = totals.max / ECTS_MIN; // generous (divide by 25)
+
+    const threshold = Number(thresholdEcts.value) || 180;
+    const thresholdMinHours = threshold * ECTS_MIN;
+    const thresholdMaxHours = threshold * ECTS_MAX;
+
+    const passThreshold = totals.min >= thresholdMinHours;
+
+    kpi.innerHTML = `
+      <span class="pill mono">合计总时长 min：<strong>${fmt(totals.min)}</strong> h</span>
+      <span class="pill mono">合计总时长 max：<strong>${fmt(totals.max)}</strong> h</span>
+      <span class="pill mono">按 ECTS 25–30h：等效约 <strong>${fmt(ectsEqMin)}–${fmt(ectsEqMax)}</strong> ECTS</span>
+      <span class="pill mono">门槛：<strong>${threshold}</strong> ECTS ⇒ <strong>${fmt(thresholdMinHours)}–${fmt(thresholdMaxHours)}</strong> h</span>
+      <span class="pill mono">是否达到（按 min）：<strong>${passThreshold ? '✅' : '⚠️'}</strong></span>
+    `;
+
+    summary.value = buildSummaryText(totals, ectsEqMin, ectsEqMax, threshold);
+    updatePreview();
+  }
+
+  window.onEdit = function(id, key, value){
+    rows = rows.map(r=> r.id===id ? ({...r, [key]: value}) : r);
+    render();
+  }
+  window.removeRow = function(id){
+    rows = rows.filter(r=>r.id!==id);
+    if (selectedRowId===id) selectedRowId = rows[0]?.id || null;
+    render();
+  }
+  window.selectRow = function(id){
+    selectedRowId = id;
+    render();
+  }
+
+  function addRow(name='', credits='', hMax='', hMin='', ref=''){
+    rows.push({id:uid(), name, credits, hMax, hMin, ref});
+    if (!selectedRowId) selectedRowId = rows[0].id;
+    render();
+  }
+
+  function presetCityu(){
+    addRow(
+      'CityU 本科',
+      126,
+      50,
+      40,
+      'https://www.cityu.edu.hk/arro/regu/regu_ugar.htm#arug14'
+    );
+  }
+
+  function presetNusRow(){
+    addRow(
+      'NUS 硕士（示例）',
+      40,
+      40,
+      40,
+      'https://nusmods.com/courses?sem[0]=1&sem[1]=2&sem[2]=3&sem[3]=4'
+    );
+  }
+
+  function resetAll(){
+    rows = [];
+    selectedRowId = null;
+    render();
+  }
+
+  // Universal helper calc
+  const weeklyHours = document.getElementById('weeklyHours');
+  const courseCredits = document.getElementById('courseCredits');
+  const semesterWeeks = document.getElementById('semesterWeeks');
+  const perCreditPreview = document.getElementById('perCreditPreview');
+
+  function updatePreview(){
+    const weekly = Number(weeklyHours.value)||0;
+    const c = Number(courseCredits.value)||0;
+    const weeks = Number(semesterWeeks.value)||0;
+    const perCredit = c>0 ? (weekly/c)*weeks : 0;
+    perCreditPreview.textContent = `每学分总小时：${fmt(perCredit)} h (from ${fmt(weekly)}h/wk ÷ ${fmt(c)} credits × ${fmt(weeks)} wks)`;
+  }
+
+  [weeklyHours, courseCredits, semesterWeeks].forEach(el=>el.addEventListener('input', updatePreview));
+
+  document.getElementById('applyCalc').addEventListener('click', ()=>{
+    if (!selectedRowId) return;
+    const weekly = Number(weeklyHours.value)||0;
+    const c = Number(courseCredits.value)||0;
+    const weeks = Number(semesterWeeks.value)||0;
+    const perCredit = c>0 ? (weekly/c)*weeks : 0;
+
+    rows = rows.map(r=>{
+      if (r.id !== selectedRowId) return r;
+      return {...r, hMax: fmt(perCredit), hMin: fmt(perCredit)};
+    });
+    render();
+  });
+
+  // Buttons
+  document.getElementById('addRow').addEventListener('click', ()=>addRow());
+  document.getElementById('presetCityu').addEventListener('click', presetCityu);
+  document.getElementById('presetNus').addEventListener('click', presetNusRow);
+  document.getElementById('reset').addEventListener('click', resetAll);
+
+  thresholdEcts.addEventListener('input', render);
+
+  document.getElementById('copySummary').addEventListener('click', async ()=>{
+    await navigator.clipboard.writeText(summary.value);
+    alert('已复制摘要');
+  });
+
+  document.getElementById('copyJson').addEventListener('click', async ()=>{
+    const payload = {
+      ectsHoursMin: ECTS_MIN,
+      ectsHoursMax: ECTS_MAX,
+      thresholdEcts: Number(thresholdEcts.value)||180,
+      rows: rows.map(computeRow)
+    };
+    await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
+    alert('已复制 JSON');
+  });
+
+  // Init: just your two lines
+  presetCityu();
+  presetNusRow();
+  render();
+</script>
+</body>
+</html>
