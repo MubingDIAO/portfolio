@@ -3,38 +3,135 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Credit → Workload → ECTS Calculator</title>
+  <title>Project 07 · ECTS 学分转换计算器</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --bg:#080814;
+      /* ===== 主页同款背景变量 ===== */
+      --bg-color:#080814;
+      --bg-gradient:
+        radial-gradient(900px 520px at 18% 18%, rgba(124,77,255,.18), transparent 60%),
+        radial-gradient(900px 520px at 82% 78%, rgba(255,110,64,.14), transparent 62%),
+        radial-gradient(1200px 800px at 50% 50%, rgba(255,255,255,.03), transparent 65%),
+        linear-gradient(to bottom, rgba(0,0,0,.18), rgba(0,0,0,.45));
+
       --card:rgba(26,26,46,.92);
       --border:rgba(255,255,255,.08);
       --text:#f5f5f5;
       --muted:#b3b3c6;
+
       --primary:#7c4dff;
       --accent:#ff6e40;
+
+      --radius:16px;
+      --radius-xl:18px;
+      --shadow:0 18px 45px rgba(0,0,0,.45);
+      --blur:18px;
+
+      /* 光斑位置（hover 用） */
+      --mx:50%;
+      --my:50%;
     }
+
     *{box-sizing:border-box}
+    html,body{height:100%}
+
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans SC", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-      background: radial-gradient(circle at top left, rgba(124,77,255,.18), transparent 50%),
-                  radial-gradient(circle at bottom right, rgba(255,110,64,.15), transparent 55%),
-                  var(--bg);
+      font-family:'Poppins','Noto Sans SC',ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+      background-color:var(--bg-color);
+      background-image:var(--bg-gradient);
       color:var(--text);
+      line-height:1.7;
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
       padding:24px;
     }
-    .wrap{max-width:1100px;margin:0 auto}
+
+    a{color:inherit;text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    /* ===== 鼠标跟随“浮动光”（主页同款） ===== */
+    .cursor-glow{
+      position:fixed;
+      left:0; top:0;
+      width:520px; height:520px;
+      border-radius:999px;
+      pointer-events:none;
+      z-index:0;
+      opacity:.45;
+      filter: blur(24px);
+      transform: translate(-50%,-50%);
+      will-change: transform;
+      background:
+        radial-gradient(circle at 35% 35%, rgba(255,110,64,.22), transparent 55%),
+        radial-gradient(circle at 70% 70%, rgba(124,77,255,.18), transparent 60%);
+    }
+
+    /* 内容永远压在光上面 */
+    .wrap{position:relative; z-index:1; max-width:1100px; margin:0 auto}
+
+    /* ===== 顶部栏（返回首页 + 翻译） ===== */
+    .top-bar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:18px;
+    }
+    .back-link{
+      font-size:.85rem;
+      color:var(--muted);
+      padding:6px 14px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      transition:all .2s ease;
+      display:inline-block;
+      background:rgba(255,255,255,.02);
+    }
+    .back-link:hover{
+      color:#fff;
+      border-color:rgba(255,255,255,.30);
+      background:rgba(255,255,255,.05);
+      text-decoration:none;
+    }
+
+    /* ===== 页面标题 ===== */
     h1{font-size:20px;margin:0 0 8px}
-    .sub{color:var(--muted);font-size:13px;margin-bottom:18px;line-height:1.5}
+    .sub{color:var(--muted);font-size:13px;margin-bottom:18px;line-height:1.55}
+    .mono{
+      font-variant-numeric:tabular-nums;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    /* ===== Card（统一到主页卡片质感） ===== */
     .card{
       background:var(--card);
       border:1px solid var(--border);
-      border-radius:16px;
+      border-radius:var(--radius-xl);
       padding:16px;
-      box-shadow:0 8px 24px rgba(0,0,0,.25);
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(var(--blur));
+      position:relative;
+      overflow:hidden;
     }
+    .card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:inherit;
+      pointer-events:none;
+      opacity:0;
+      transition: opacity .25s ease;
+      background: radial-gradient(circle at var(--mx) var(--my), rgba(255,110,64,.16), transparent 45%);
+    }
+    .card:hover::after{opacity:1}
+
     .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+
     .btn{
       background:rgba(124,77,255,.18);
       border:1px solid rgba(124,77,255,.35);
@@ -45,17 +142,26 @@
       font-size:13px;
       transition:.15s ease;
       user-select:none;
+      position:relative;
+      z-index:1;
     }
-    .btn:hover{transform:translateY(-1px);border-color:rgba(124,77,255,.6)}
+    .btn:hover{transform:translateY(-1px);border-color:rgba(124,77,255,.65)}
     .btn.danger{
       background:rgba(255,110,64,.12);
       border-color:rgba(255,110,64,.35);
     }
+    .btn.danger:hover{border-color:rgba(255,110,64,.65)}
     .btn.ghost{
       background:transparent;
       border-color:var(--border);
       color:var(--muted);
     }
+    .btn.ghost:hover{
+      color:#fff;
+      border-color:rgba(255,255,255,.30);
+      background:rgba(255,255,255,.04);
+    }
+
     table{width:100%;border-collapse:separate;border-spacing:0 10px;margin-top:10px}
     thead th{
       text-align:left;
@@ -66,7 +172,6 @@
     }
     tbody tr{
       background:rgba(255,255,255,.03);
-      border:1px solid var(--border);
     }
     tbody td{
       padding:10px;
@@ -76,7 +181,8 @@
     }
     tbody tr td:first-child{border-left:1px solid rgba(255,255,255,.06);border-radius:12px 0 0 12px}
     tbody tr td:last-child{border-right:1px solid rgba(255,255,255,.06);border-radius:0 12px 12px 0}
-    input{
+
+    input, textarea{
       width:100%;
       padding:9px 10px;
       border-radius:10px;
@@ -85,9 +191,18 @@
       color:var(--text);
       outline:none;
       font-size:13px;
+      position:relative;
+      z-index:1;
     }
-    input::placeholder{color:rgba(179,179,198,.55)}
-    .mono{font-variant-numeric:tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;}
+    input::placeholder, textarea::placeholder{color:rgba(179,179,198,.55)}
+    textarea{
+      min-height:120px;
+      border-radius:12px;
+      font-size:12px;
+      line-height:1.5;
+      resize:vertical;
+    }
+
     .pill{
       display:inline-flex;align-items:center;gap:8px;
       padding:8px 10px;border-radius:999px;
@@ -95,122 +210,138 @@
       background:rgba(255,255,255,.03);
       color:var(--muted);
       font-size:12px;
+      position:relative;
+      z-index:1;
     }
     .kpi{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
     .kpi .pill strong{color:var(--text)}
-    a{color:#9bb6ff;text-decoration:none}
-    a:hover{text-decoration:underline}
+
     .small{font-size:12px;color:var(--muted);line-height:1.5}
     .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
     @media (max-width:920px){ .grid2{grid-template-columns:1fr} }
-    textarea{
-      width:100%;
-      min-height:120px;
-      padding:10px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(10,10,25,.55);
-      color:var(--text);
-      font-size:12px;
-      line-height:1.5;
-      resize:vertical;
-    }
+
     .inline{
       display:flex;align-items:center;gap:8px;flex-wrap:wrap;
       padding:10px 12px;border-radius:14px;border:1px solid var(--border);
       background:rgba(255,255,255,.03);
+      position:relative;
+      z-index:1;
     }
     .inline label{font-size:12px;color:var(--muted)}
     .inline input{width:110px}
+
+    footer{
+      text-align:center;
+      padding:34px 0 10px;
+      color:var(--muted);
+      font-size:.8rem;
+    }
+
+    /* 移动端/触屏：关闭 cursor glow */
+    @media (pointer: coarse){
+      .cursor-glow{display:none;}
+    }
   </style>
 </head>
+
 <body>
-<div class="wrap">
-  <h1>Credit → Workload → ECTS 计算器</h1>
-  <div class="sub">
-    ECTS（European Credit Transfer and Accumulation System）是欧洲高校常用的学分体系，核心作用是把“学习强度”统一到一个可比较的标准上，方便不同国家、不同学校之间认学分、算资格。它关注的不是课程名字，而是学生完成一门课实际要投入多少时间，一般一整个学年对应 60 ECTS。
-    对非欧洲学生来说，本计算器可以帮助用来核对自己是否满足学分或学习量要求。
-  </div>
-  <div class="sub">
-    先把各校“学分”换成 <span class="mono">总学习时间（hours）</span>，再用 <span class="mono">ECTS 25–30 h/ECTS</span> 给出区间等效。<br/>
-    你可以用预设（CityU / NUS），也可以手动改每行的 “每学分代表时长(min/max)” 和 reference。
-  </div>
+  <!-- 全局鼠标跟随光 -->
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
 
-  <div class="card">
-    <div class="row">
-      <button class="btn" id="addRow">+ 加一行</button>
-      <button class="btn" id="presetCityu">预设：CityU 本科</button>
-      <button class="btn" id="presetNus">预设：NUS（示例行，可自行改口径）</button>
-      <button class="btn danger" id="reset">清空</button>
+  <div class="wrap">
+    <!-- 顶部栏：返回首页 + 翻译 -->
+    <div class="top-bar">
+      <a href="index.html" class="back-link">← 返回首页</a>
+      <div id="google_translate_element"></div>
+    </div>
 
-      <div class="inline" style="margin-left:auto">
-        <label>标准门槛（ECTS）</label>
-        <input id="thresholdEcts" class="mono" type="number" step="1" value="180" />
-        <span class="small">（可改：120 / 180 / 240 / 300…）</span>
+    <h1>Credit → Workload → ECTS 计算器</h1>
+    <div class="sub">
+      ECTS（European Credit Transfer and Accumulation System）是欧洲高校常用的学分体系，核心作用是把“学习强度”统一到一个可比较的标准上，方便不同国家、不同学校之间认学分、算资格。它关注的不是课程名字，而是学生完成一门课实际要投入多少时间，一般一整个学年对应 60 ECTS。
+      对非欧洲学生来说，本计算器可以帮助用来核对自己是否满足学分或学习量要求。
+    </div>
+    <div class="sub">
+      先把各校“学分”换成 <span class="mono">总学习时间（hours）</span>，再用 <span class="mono">ECTS 25–30 h/ECTS</span> 给出区间等效。<br/>
+      你可以用预设（CityU / NUS），也可以手动改每行的 “每学分代表时长(min/max)” 和 reference。
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <button class="btn" id="addRow">+ 加一行</button>
+        <button class="btn" id="presetCityu">预设：CityU 本科</button>
+        <button class="btn" id="presetNus">预设：NUS（示例行，可自行改口径）</button>
+        <button class="btn danger" id="reset">清空</button>
+
+        <div class="inline" style="margin-left:auto">
+          <label>标准门槛（ECTS）</label>
+          <input id="thresholdEcts" class="mono" type="number" step="1" value="180" />
+          <span class="small">（可改：120 / 180 / 240 / 300…）</span>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width:16%">项目</th>
+            <th style="width:10%">总学分</th>
+            <th style="width:16%">每学分代表时长 max(h)</th>
+            <th style="width:16%">每学分代表时长 min(h)</th>
+            <th style="width:12%">总时长 max</th>
+            <th style="width:12%">总时长 min</th>
+            <th style="width:24%">reference（可贴链接）</th>
+            <th style="width:6%"></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+
+      <div class="kpi" id="kpi"></div>
+
+      <div class="grid2">
+        <div>
+          <div class="small">结果摘要（可复制到申请材料）</div>
+          <textarea id="summary" class="mono" readonly></textarea>
+          <div class="row" style="margin-top:10px">
+            <button class="btn" id="copySummary">复制摘要</button>
+            <button class="btn ghost" id="copyJson">复制 JSON</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="small">
+            通用快捷计算（把学分的 workload 定义显式化）<br/>
+            公式：<span class="mono">每学分总小时 = (每周总学习小时 ÷ 每门课学分) × 学期周数</span>
+          </div>
+
+          <div class="row" style="margin-top:10px">
+            <div style="flex:1">
+              <label class="small">每周总学习小时（含 lecture + self-study）</label>
+              <input id="weeklyHours" type="number" step="0.1" value="10" />
+            </div>
+            <div style="flex:1">
+              <label class="small">每门课学分（如 4）</label>
+              <input id="courseCredits" type="number" step="0.1" value="4" />
+            </div>
+            <div style="flex:1">
+              <label class="small">学期周数（如 15/16）</label>
+              <input id="semesterWeeks" type="number" step="1" value="15" />
+            </div>
+          </div>
+
+          <div class="kpi" style="margin-top:10px">
+            <span class="pill mono" id="perCreditPreview">每学分总小时：-</span>
+            <button class="btn" id="applyCalc">应用到选中行</button>
+          </div>
+
+          <div class="small" style="margin-top:8px">
+            用法：选中你要更新的那一行（表格会高亮），然后点“应用到选中行”，会把该行的 min/max 都设置为同一个计算值（你也可以再手动改回区间）。
+          </div>
+        </div>
       </div>
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th style="width:16%">项目</th>
-          <th style="width:10%">总学分</th>
-          <th style="width:16%">每学分代表时长 max(h)</th>
-          <th style="width:16%">每学分代表时长 min(h)</th>
-          <th style="width:12%">总时长 max</th>
-          <th style="width:12%">总时长 min</th>
-          <th style="width:24%">reference（可贴链接）</th>
-          <th style="width:6%"></th>
-        </tr>
-      </thead>
-      <tbody id="tbody"></tbody>
-    </table>
-
-    <div class="kpi" id="kpi"></div>
-
-    <div class="grid2">
-      <div>
-        <div class="small">结果摘要（可复制到申请材料）</div>
-        <textarea id="summary" class="mono" readonly></textarea>
-        <div class="row" style="margin-top:10px">
-          <button class="btn" id="copySummary">复制摘要</button>
-          <button class="btn ghost" id="copyJson">复制 JSON</button>
-        </div>
-      </div>
-
-      <div>
-        <div class="small">
-          通用快捷计算（把学分的 workload 定义显式化）<br/>
-          公式：<span class="mono">每学分总小时 = (每周总学习小时 ÷ 每门课学分) × 学期周数</span>
-        </div>
-
-        <div class="row" style="margin-top:10px">
-          <div style="flex:1">
-            <label class="small">每周总学习小时（含 lecture + self-study）</label>
-            <input id="weeklyHours" type="number" step="0.1" value="10" />
-          </div>
-          <div style="flex:1">
-            <label class="small">每门课学分（如 4）</label>
-            <input id="courseCredits" type="number" step="0.1" value="4" />
-          </div>
-          <div style="flex:1">
-            <label class="small">学期周数（如 15/16）</label>
-            <input id="semesterWeeks" type="number" step="1" value="15" />
-          </div>
-        </div>
-
-        <div class="kpi" style="margin-top:10px">
-          <span class="pill mono" id="perCreditPreview">每学分总小时：-</span>
-          <button class="btn" id="applyCalc">应用到选中行</button>
-        </div>
-
-        <div class="small" style="margin-top:8px">
-          用法：选中你要更新的那一行（表格会高亮），然后点“应用到选中行”，会把该行的 min/max 都设置为同一个计算值（你也可以再手动改回区间）。
-        </div>
-      </div>
-    </div>
+    <footer>© 2025 [Mubing DIAO]. Crafted in dark mode, with a bit of orange.</footer>
   </div>
-</div>
 
 <script>
   const ECTS_MIN = 25; // hours per ECTS
@@ -403,10 +534,69 @@
     alert('已复制 JSON');
   });
 
-  // Init: just your two lines
+  // Init
   presetCityu();
   presetNusRow();
   render();
 </script>
+
+<script>
+  // ===== 全局鼠标跟随光：平滑移动（主页同款） =====
+  (() => {
+    const glow = document.getElementById('cursorGlow');
+    if (!glow) return;
+
+    // 触屏设备不启用
+    if (matchMedia('(pointer: coarse)').matches) {
+      glow.style.display = 'none';
+      return;
+    }
+
+    let tx = innerWidth * 0.5, ty = innerHeight * 0.35;
+    let cx = tx, cy = ty;
+
+    addEventListener('pointermove', (e) => {
+      tx = e.clientX;
+      ty = e.clientY;
+    }, { passive: true });
+
+    function tick(){
+      cx += (tx - cx) * 0.12;
+      cy += (ty - cy) * 0.12;
+      glow.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+      requestAnimationFrame(tick);
+    }
+    tick();
+  })();
+
+  // ===== 卡片内光斑跟随（hover 时更有质感）=====
+  (() => {
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const x = ((e.clientX - r.left) / r.width) * 100;
+        const y = ((e.clientY - r.top) / r.height) * 100;
+        card.style.setProperty('--mx', x + '%');
+        card.style.setProperty('--my', y + '%');
+      }, { passive: true });
+    });
+  })();
+</script>
+
+<script>
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement(
+      {
+        pageLanguage: 'zh-CN',
+        includedLanguages: 'en,zh-CN',
+        autoDisplay: false
+      },
+      'google_translate_element'
+    );
+  }
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 </body>
 </html>
