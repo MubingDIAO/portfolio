@@ -7,15 +7,17 @@
     <base href="/portfolio/">
   
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
    
   <style>
     :root{
       --bg-color:#080814;
       --bg-gradient:
-        radial-gradient(900px 520px at 18% 18%, rgba(124,77,255,.18), transparent 60%),
-        radial-gradient(900px 520px at 82% 78%, rgba(255,110,64,.14), transparent 62%),
-        radial-gradient(1200px 800px at 50% 50%, rgba(255,255,255,.03), transparent 65%),
-        linear-gradient(to bottom, rgba(0,0,0,.18), rgba(0,0,0,.45));
+      radial-gradient(1100px 700px at 14% 18%, rgba(124,77,255,.22), transparent 62%),
+      radial-gradient(1100px 700px at 86% 78%, rgba(255,110,64,.18), transparent 64%),
+      radial-gradient(1400px 900px at 55% 40%, rgba(255,255,255,.035), transparent 68%),
+      radial-gradient(900px 600px at 50% 110%, rgba(124,77,255,.10), transparent 60%),
+      linear-gradient(180deg, rgba(0,0,0,.10) 0%, rgba(0,0,0,.42) 65%, rgba(0,0,0,.55) 100%);
       --card-bg: rgba(26,26,46,.90);
       --card-border: rgba(255,255,255,.06);
       --text:#f5f5f5;
@@ -46,6 +48,10 @@
       line-height:1.7;
       -webkit-font-smoothing:antialiased;
       overflow-x:hidden;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+
     }
 
     /* ===== 鼠标跟随“浮动光”（稳定版，不用 mix-blend-mode） ===== */
@@ -432,7 +438,7 @@
       color:var(--muted);
     }
 
-    /* ✅ 整卡可点击（方法一） */
+    /* ✅ 整卡可点击 */
     .portfolio-link{
       display:block;
       text-decoration:none;
@@ -506,6 +512,44 @@
       transform: scale(1.04);
       transition: transform 0.6s ease;
     }
+
+        /* ===== Google Translate: mobile visible + match your dark UI ===== */
+    #google_translate_element{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      min-width: 140px;
+    }
+
+    .goog-te-gadget{
+      font-family: inherit !important;
+      color: var(--muted) !important;
+      font-size: 0.86rem !important;
+      line-height: 1.2 !important;
+    }
+
+    .goog-te-gadget .goog-te-combo{
+      background: rgba(255,255,255,.06) !important;
+      color: #fff !important;
+      border: 1px solid rgba(255,255,255,.14) !important;
+      border-radius: 999px !important;
+      padding: 6px 10px !important;
+      outline: none !important;
+      max-width: 180px;
+    }
+
+    /* 避免手机端被挤没：导航在小屏时允许换行 */
+    @media (max-width: 840px){
+      .nav-inner{
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      #google_translate_element{
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+
 
 
   </style>
